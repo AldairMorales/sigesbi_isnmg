@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SIGESBI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+
+    <title>
+        {% block title %}
+            Error |
+        {% endblock %}
+    </title>
+<body>
+
+    {% block content %}
+    {% endblock %}
+
+</body>

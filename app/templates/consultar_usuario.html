@@ -1,0 +1,162 @@
+{% extends "layout.html" %}
+
+{% block title %} Consultar Usuario {% endblock %}
+
+{% block head %}
+    <!--  Datatables  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+    <!--  extension responsive  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <script src="{{ url_for('static', filename='js/ventanaModal.js') }}"></script>
+{% endblock %}
+
+{% block section %}
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+          <h2>Consulta de Usuarios</h2>
+      </div>
+      <div class="card-body text-left">
+          <div class="table-responsive mt-8">
+              <table id="tableD" class="table table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                    <tr>
+                        {% if 'admin' in session %}
+                        <th class="text-center">
+                            Opciones
+                        </th>
+                        {% endif %}
+                        <th class="text-center">
+                            #
+                        </th>
+                        <th class="text-center">
+                            Nombre
+                        </th>
+                        <th class="text-center">
+                            Apellido
+                        </th>
+                        <th class="text-center">
+                            DNI
+                        </th>
+                        <th class="text-center">
+                            Telefono
+                        </th>
+                        <th class="text-center">
+                            Nombre de Usuario
+                        </th>
+                        <th class="text-center">
+                            Tipo Usuario
+                        </th>
+                        <th class="text-center">
+                            Estado
+                        </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for usuario in usuarios %}
+                      <tr>
+                          {% if 'admin' in session %}
+                          <td>
+                              {% if usuario.estado %}
+                              <button type="button" class="botonEditarUsuario" data-toggle="modal" data-target="#modalUsuario">
+                                  Editar
+                              </button>
+                              <a href="/delete/usuario/{{usuario.id_usuario}}">
+                                  <button type="button" class="btn btn-danger"> Eliminar </button>
+                              </a>
+                              {% else %}
+                              <a href="/activar/usuario/{{usuario.id_usuario}}">
+                                  <button type="button" class="btn btn-secondary"> Activar </button>
+                              </a>
+                              {% endif %}
+                          </td>
+                          {% endif %}
+                          <td id="idUsuario">{{usuario.id_usuario}}</td>
+                          <td id="nombreU">{{usuario.nombre}}</td>
+                          <td id="apellidoU">{{usuario.apellido}}</td>
+                          <td>{{usuario.dni}}</td>
+                          <td id="telefonoU">{{usuario.telefono}}</td>
+                          <td>{{usuario.nombre_usuario}}</td>
+                          {% if usuario.id_tipo == 1 %}
+                            <td> Administrador </td>
+                          {% else %}
+                            <td> Bibliotecario </td>
+                          {% endif %}
+                          {% if usuario.estado %}
+                            <td> Disponible </td>
+                          {% else %}
+                            <td> De baja </td>
+                          {% endif %}
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal Editar -->
+<div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModal">Editar Usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body text-left">
+            <div class="content-formulario">
+                <form action="/update/usuario" method="post" autocomplete="off" class="form">
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input id="identificador" name="identificador" type="hidden" class="col-md-1 control-label">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label id="etiqueta2">Nombre</label>
+                            <input id="nombre" name="nombre" type="text"  class="col-md-10 control-label">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label id="etiqueta2">Apellidos</label>
+                            <input id="apellido" name="apellido" type="text"  class="col-md-10 control-label">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-10">
+                            <label id="etiqueta2">Telefono:</label>
+                            <input id="telefono" name="telefono" type="tel"  class="col-md-6 control-label">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-10">
+                            <label id="etiqueta2">Clave:</label>
+                            <input id="clave" name="clave" type="password"  class="col-md-6 control-label">
+                        </div>
+                    </div>
+                    <button type="submit" id="guardar" class="btn btn-success">Guardar</button>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+       <!--   Datatables-->
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+        <script src="{{ url_for('static', filename='js/edit_delete.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dataTable.js') }}"></script>
+{% endblock %}

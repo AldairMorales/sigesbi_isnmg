@@ -1,0 +1,200 @@
+{% extends "layout.html" %}
+{% block title %} Registrar Prestamo {% endblock %}
+
+{% block head %}
+<link href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css" rel="stylesheet"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+{% endblock %}
+
+{% block section %}
+<!-- Button trigger modal -->
+<div class="content-formulario">
+	    <h1 class="h1titulo">Registrar Nuevo Prestamo</h1>
+        <form action="/registrar/prestamo" method="POST"  class="form">
+            <h1 class="h2titulo"> Datos de la Persona </h1>
+            <div class="form-row">
+                <div class="form-group col-md-14">
+                    <input id="idPersona" name="idPersona" type="hidden"  class="col-md-2 control-label">
+                    <label>DNI: </label>
+                    <input id="dni" name="dni" type="text"  class="col-md-6 control-label" disabled>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPersona">
+                        Buscar Persona
+                    </button>
+                </div>
+                <div class="form-group col-md-14">
+                    <label>Nombre: </label>
+                    <input id="nombre" name="nombre" type="text"  class="col-md-4 control-label" disabled>
+                    <label>Apellido: </label>
+                    <input id="apellido" name="apellido" type="text"  class="col-md-4 control-label" disabled>
+                </div>
+            </div>
+            <h1 class="h2titulo"> Datos del Prestamo </h1>
+            <div class="form-row">
+                <div class="form-group col-md-14" >
+                    <input id="idLibro" name="idLibro" type="hidden"  class="col-md-2 control-label">
+                    <label >ISBN:</label>
+                    <input id="isbn" name="isbn" type="text"  class="col-md-6 control-label" disabled>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalLibro">
+                        Buscar Libro
+                    </button>
+                </div>
+                <div class="form-group col-md-12" >
+                    <label >Titulo de Libro:</label>
+                    <input id="libro" name="libro" type="text"  class="col-md-8 control-label" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-5" >
+                    <label>Fecha de Devolucion</label>
+                    {{ form.hidden_tag() }}
+                    {{ form.fecha_devolucion() }}
+                </div>
+                <div class="form-group col-md-6" >
+                    <label >Estado del Libro</label>
+                    {{ form.estado_entregado() }}
+                </div>
+
+            </div>
+            {{ form.submit() }}
+        </form>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalPersona" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Listado de Personas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+              <input type="text" class="form-control pull-right" style="width:40%" id="buscarPersona" placeholder="Buscar en lista...">
+          </div>
+        <div class="card-body text-left">
+            <div class="table-responsive mt-3">
+                <table class="table-bordered table pull-right" id="tablePersona" cellspacing="0" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            Opcion
+                        </th>
+                        <th class="text-center">
+                            Nombre
+                        </th>
+                        <th class="text-center">
+                            Apellido
+                        </th>
+                        <th class="text-center">
+                          DNI
+                        </th>
+                        <th class="text-center">
+                          #
+                        </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {% for persona in personas %}
+                      <tr>
+                          {% if persona.estado %}
+                          <td>
+                              <button type="button" class="botonPersona" data-dismiss="modal">+</button>
+                          </td>
+                          <td id="nombreP">{{persona.nombre}}</td>
+                          <td id="apellidoP">{{persona.apellido}}</td>
+                          <td id="dniP">{{persona.dni}}</td>
+                          <td id="ideP">{{persona.id_persona}}</td>
+                          {% endif %}
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Libro -->
+<div class="modal fade" id="modalLibro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModal">Listado de Libros</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body text-left">
+            <input type="text" class="form-control pull-right" style="width:40%" id="buscarLibro" placeholder="Buscar en lista...">
+            <div class="table-responsive mt-8">
+                <table class="table-bordered table pull-right" id="tableLibro" cellspacing="0" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            Opcion
+                        </th>
+                        <th class="text-center">
+                            Titulo del Libro
+                        </th>
+                        <th class="text-center">
+                            ISBN
+                        </th>
+                        <th class="text-center">
+                            Ubicacion
+                        </th>
+                        <th class="text-center">
+                            #
+                        </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {% for libro in libros %}
+                      <tr>
+                          {% if libro.estado and libro.ejemplares != 0 %}
+                          <td>
+                              <button type="button" class="botonLibro" data-dismiss="modal">+</button>
+                          </td>
+                          <td id="librot">{{libro.titulo}}</td>
+                          <td id="isbnL">{{libro.isbn}}</td>
+                          <td>{{libro.ubicacion}}</td>
+                          <td id="ideL">{{libro.id_libro}}</td>
+                          {% endif %}
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/table.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/ventanaModal.js') }}"></script>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+    {% endblock %}

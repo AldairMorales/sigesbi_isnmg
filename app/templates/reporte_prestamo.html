@@ -1,0 +1,115 @@
+{% extends "layout.html" %}
+
+{% block title %} Reporte Prestamo {% endblock %}
+
+{% block section %}
+<div class="content-formulario">
+    <h1 class="h1titulo">Reportes de Prestamos</h1>
+    <form action="/reporte/prestamo" method="post" autocomplete="off" class="form">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Fecha inicio</label>
+                <input type="date" id="fechaInicio" name="fechaInicio" class="form-control pull-right">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Fecha Fin</label>
+                <input type="date" id="fechaFin" name="fechaFin" class="form-control pull-right">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-secondary">Procesar Reporte</button>
+    </form>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Prestamos</h2>
+        </div>
+        <div class="card-body text-left">
+            <div class="table-responsive mt-8">
+                <table id="tableD" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            Estado
+                        </th>
+                        <th class="text-center">
+                            DNI Persona
+                        </th>
+                        <th class="text-center">
+                            Libro
+                        </th>
+                        <th class="text-center">
+                            ejemplar
+                        </th>
+                        <th class="text-center">
+                            Fecha de Prestamo
+                        </th>
+                        <th class="text-center">
+                            Fecha de Devolucion
+                        </th>
+                        <th class="text-center">
+                            Fecha de Recepcion
+                        </th>
+                        <th class="text-center">
+                            Estado Libro Entregado
+                        </th>
+                        <th class="text-center">
+                            Estado Libro Recepcionado
+                        </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {% for prestamo, libro, persona, ejemplar in prestamos %}
+                      <tr>
+                          {% if prestamo.estado %}
+                            <td> Registrado </td>
+                          {% else %}
+                            <td> Pendiente </td>
+                          {% endif %}
+                          <td>{{persona}}</td>
+                          <td>{{libro}}</td>
+                          <td>{{ejemplar}}</td>
+                          <td>{{prestamo.fecha_creacion}}</td>
+                          <td>{{prestamo.fecha_devolucion}}</td>
+                          <td>{{prestamo.fecha_confirmacion}}</td>
+                          <td> {{prestamo.estado_entregado}}</td>
+                          {% if prestamo.estado_recibido %}
+                            <td> {{prestamo.estado_recibido}}</td>
+                          {% else %}
+                            <td> --- </td>
+                          {% endif %}
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+    {% block scripts %}
+        {{ super() }}
+        <script>
+        $(document).ready(function() {
+	        var table = $('#example').DataTable( {
+	        lengthChange: false,
+	        buttons: [ 'copy', 'excel', 'csv', 'pdf', 'colvis' ]
+	        } );
+	        table.buttons().container()
+	            .appendTo( '#example_wrapper .col-md-6:eq(0)' );
+	    } );
+        </script>
+
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    {% endblock %}

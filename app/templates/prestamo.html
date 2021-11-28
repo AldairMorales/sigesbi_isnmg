@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %} Registrar Prestamo {% endblock %}
+
+{% block section %}
+    <div class="content-formulario">
+	    <p class="h1">Registrar Nuevo Prestamo</p>
+        <form action="/registro/prestamo" method="POST"  class="form" >
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Documento de Identidad: </label>
+                    {{ form.hidden_tag() }}
+                    {{ form.dni() }}
+                </div>
+                <div class="form-group col-md-2">
+                    <label>Identificador</label>
+                    <input id="id_persona" name="id_persona" type="text"  class="col-md-2 control-label" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Nombre: </label>
+                    <input id="nombre" name="nombre" type="text"  class="col-md-6 control-label" disabled>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Apellidos: </label>
+                    <input id="apellidos" name="apellidos" type="text"  class="col-md-6 control-label" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+
+            </div>
+            <label></label>
+            {{ form.submit() }}
+        </form>
+</div>
+{% endblock %}
+
+
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/persona.js') }}"></script>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    {% endblock %}

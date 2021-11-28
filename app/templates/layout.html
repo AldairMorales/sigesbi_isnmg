@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='../static/css/styles.css') }}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+	{% block head %} {% endblock %}
+
+</head>
+<body style="margin:20px auto">
+
+<header class="header">
+	<div class="container">
+		<div class="btn-menu">
+			<label for="btn-menu">☰</label>
+		</div>
+		<div class="logo">
+			<h1>Logotipo I.T.S.P Martin</h1>
+		</div>
+		<nav class="menu">
+			<a href="{{ url_for('inicio') }}">Inicio</a>
+			<a href="{{ url_for('salir') }}">Salir</a>
+		</nav>
+	</div>
+	<input type="checkbox" id="btn-menu">
+	<div class="container-menu">
+		<div class="cont-menu">
+			<nav>
+				<li>
+					{% if 'admin' in session %}
+					<a href="#" class="menu-link">Biblioteca</a>
+					<ul>
+						<li><a href="{{ url_for('registrarAutor') }}" >Registrar Autores</a></li>
+               			<li><a href="{{ url_for('registrarCategoria') }}" >Registrar Categorias</a></li>
+               			<li><a href="{{ url_for('registrarEditorial') }}" >Registrar Editorial</a></li>
+               			<li><a href="{{ url_for('registrarLibro') }}" >Registrar Libros</a></li>
+            		</ul></li>
+					<li><a href="#" class="menu-link">Usuarios</a>
+					<ul>
+               			<li><a href="{{ url_for('registrarUsuario') }}" >Registrar Usuarios</a></li>
+            		</ul></li>
+					{% endif %}
+					<li><a href="#" class="menu-link">Personas</a>
+					<ul>
+            		   	<li><a href="{{ url_for('registrarPersona') }}" >Registrar Personas</a></li>
+					</ul></li>
+
+					<li><a href="#" class="menu-link">Prestamos</a>
+					<ul>
+           		    	<li><a href="{{ url_for('registrarPrestamo') }}" >Registrar Prestamo</a></li>
+						<li><a href="{{ url_for('registrarDevolucion') }}" >Registrar Devolucion</a></li>
+           			</ul></li>
+
+					<li><a href="#" class="menu-link">Consultas</a>
+					<ul>
+						{% if 'admin' in session %}
+               			<li><a href="{{ url_for('consultarAutor') }}" >Autores</a></li>
+               			<li><a href="{{ url_for('consultarCategoria') }}" >Categorias</a></li>
+               			<li><a href="{{ url_for('consultarEditorial') }}" >Editorial</a></li>
+						<li><a href="{{ url_for('consultarUsuario') }}" >Usuarios</a></li>
+						{% endif %}
+						<li><a href="{{ url_for('consultarLibro') }}" >Libros</a></li>
+						<li><a href="{{ url_for('consultarPersona') }}" >Personas</a></li>
+						<li><a href="{{ url_for('consultarPrestamo') }}" >Prestamos</a></li>
+            		</ul></li>
+					{% if 'admin' in session %}
+					<li><a href="#" class="menu-link">Reportes</a>
+					<ul>
+               			<li><a href="{{ url_for('reportePrestamo') }}">Reporte de prestamos</a></li>
+               			<li><a href="{{ url_for('reporteUsuarios') }}">Reporte de usuarios</a></li>
+            		</ul></li>
+					{% endif %}
+				</nav>
+				<label for="btn-menu">✖️</label>
+			</div>
+		</div>
+</header>
+
+	{% block section %}
+	{% endblock %}
+
+	{% block scripts %}
+   	{% endblock %}
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<!--   Datattales-->
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+        <!-- extension responsive -->
+        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script src="{{ url_for('static', filename='js/dataTable.js') }}"></script>
+
+</body>
+</html>

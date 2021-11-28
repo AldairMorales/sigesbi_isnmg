@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %} Registrar Usuario {% endblock %}
+
+{% block section %}
+    <div class="content-formulario">
+	    <h1 class="h1titulo">Registrar Nuevo Usuario</h1>
+        <form action="/registrar/usuario" method="post" autocomplete="off" class="form" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Tipo Usuario</label>
+                    {{ form.hidden_tag() }}
+
+                    {{ form.tipoUsuario() }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Nombre</label>
+                    {{ form.nombre() }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Apellidos</label>
+                    {{ form.apellido() }}
+                </div>
+                <div class="form-group col-md-6">
+                   <label>DNI:</label>
+                   {{ form.dni() }}
+                </div>
+               <div class="form-group col-md-6">
+                   <label>telefono:</label>
+                   {{ form.telefono() }}
+               </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Usuario:</label>
+                    {{ form.usuario() }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Clave:</label>
+                    {{ form.clave() }}
+                </div>
+            </div>
+
+            {{ form.submit() }}
+        </form>
+    </div>
+{% endblock %}
+
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    {% endblock %}

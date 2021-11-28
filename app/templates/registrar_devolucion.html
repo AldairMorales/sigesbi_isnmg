@@ -1,0 +1,196 @@
+{% extends "layout.html" %}
+{% block title %} Registrar Prestamo {% endblock %}
+
+{% block head %}
+<link href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css" rel="stylesheet"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+{% endblock %}
+
+{% block section %}
+<!-- Button trigger modal -->
+  <div class="content-formulario">
+	    <h1 class="h1titulo">Registrar Devolucion </h1>
+  </div>
+<div class="container">
+    <div class="card">
+      <div class="card-header">
+          <h2>Lista de Prestamos Pendientes</h2>
+          <h2>{{persona}}</h2>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPersona">
+                        Buscar Persona
+          </button>
+      </div>
+      <div class="card-body text-left">
+          <div class="table-responsive mt-8">
+              <table id="tableD" class="table table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                      <tr>
+                          <th class="text-center">
+                            Devolucion
+                          </th>
+                          <th class="text-center">
+                            #
+                          </th>
+                          <th class="text-center">
+                            Libro
+                          </th>
+                          <th class="text-center">
+                            Fecha Prestamo
+                          </th>
+                          <th class="text-center">
+                            Fecha de Devolucion
+                          </th>
+                          <th class="text-center">
+                            Estado Entregado
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+
+                  {% for prestamo, libro in prestamos %}
+                      <tr>
+                          <td>
+                              <button type="button" class="botonDevolucion" data-toggle="modal" data-target="#modalDevolucion">
+                                  Registrar
+                              </button>
+                          </td>
+                          <td id="prestamo">{{prestamo.id_prestamo}}</td>
+                          <td>{{libro}}</td>
+                          <td>{{prestamo.fecha_creacion}}</td>
+                          <td>{{prestamo.fecha_devolucion}}</td>
+                          <td id="estado">{{prestamo.estado_entregado}}</td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalPersona" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Listado de Personas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+              <input type="text" class="form-control pull-right" style="width:40%" id="buscarPersona" placeholder="Buscar en lista...">
+          </div>
+        <div class="card-body text-left">
+            <div class="table-responsive mt-3">
+                <table class="table-bordered table pull-right" id="tablePersona" cellspacing="0" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            Opcion
+                        </th>
+                        <th class="text-center">
+                          DNI
+                        </th>
+                        <th class="text-center">
+                            Nombre
+                        </th>
+                        <th class="text-center">
+                            Apellido
+                        </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {% for persona in personas %}
+                      <tr>
+                          {% if persona.estado %}
+                          <td>
+                              <a href="/registro/devolucion/{{persona.id_persona}}">
+                                <button type="button" class="btn btn-primary">+</button>
+                              </a>
+                          </td>
+                          <td>{{persona.dni}}</td>
+                          <td>{{persona.nombre}}</td>
+                          <td>{{persona.apellido}}</td>
+                          {% endif %}
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Devolver -->
+<div class="modal fade" id="modalDevolucion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModal">Devolucion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body text-left">
+            <div class="content-formulario">
+                <form action="/registrar/devolucion" method="post" autocomplete="off" class="form" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input id="ideprestamo" name="ideprestamo" type="hidden" class="col-md-2 control-label">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <div class="md-form">
+                                <label id="etiqueta2" for="estadoRecibido">Estado Entregado:</label>
+                                <textarea id="estadoEntregado" name="estadoEntregado" class="md-textarea form-control" rows="3" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <div class="md-form">
+                                <label id="etiqueta2" for="estadoRecibido">Estado Devolucion:</label>
+                                <textarea id="estadoRecibido" name="estadoRecibido" class="md-textarea form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="guardar" class="btn btn-success">Guardar</button>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/table.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/ventanaModal.js') }}"></script>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+    {% endblock %}

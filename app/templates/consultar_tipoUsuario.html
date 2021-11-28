@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %} Consultar Tipo Usuario {% endblock %}
+
+{% block head %}
+    <!--  Datatables  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+    <!--  extension responsive  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+{% endblock %}
+
+{% block section %}
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+          <h2>Consulta de Tipos de Usuario</h2>
+      </div>
+      <div class="card-body text-left">
+          <div class="table-responsive mt-8">
+              <table class="table table-bordered">
+                  <thead>
+                      <tr>
+                          <th class="text-center">
+                              Identificador
+                          </th>
+                          <th class="text-center">
+                              Descripcion
+                          </th>
+
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {% for tipo in tiposUsuario %}
+                      <tr>
+                          <td>{{tipo.id_tipo_usuario}}</td>
+                          <td>{{tipo.descripcion}}</td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+        {{ super() }}
+        <!--   Datatables-->
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+        <!-- extension responsive -->
+        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script src="{{ url_for('static', filename='js/dataTable.js') }}"></script>
+{% endblock %}

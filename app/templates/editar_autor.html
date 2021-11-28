@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %} Editar Autor {% endblock %}
+
+{% block section %}
+    <div class="content-formulario">
+	    <h1 class="h1titulo" >Editar Autor</h1>
+        <form action="/editar/autor" method="post" autocomplete="off" class="form" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Nombre completo</label>
+                    {{ form.hidden_tag() }}
+                    {{ form.nombre() }}
+                </div>
+            </div>
+            <div class="form-row">
+            </div>
+            {{ form.submit() }}
+        </form>
+    </div>
+{% endblock %}

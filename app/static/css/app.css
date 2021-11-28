@@ -1,0 +1,122 @@
+.divreporte{
+    width 20 ;
+    height 20;
+    padding 200;
+    margin  600;
+}
+:root{
+    --color-primary: hsl(224, 84%, 52%);
+    --font-color-primary: hsla(180, 100%, 99%, 0.973);
+    --font-color-secondary: hsl(0, 0%, 30%);
+    --color-modal: hsla(0, 0%, 30%, .5);
+    --color-danger: hsl(0, 50%, 40%);
+    --color-success: hsl(120, 50%, 40%);
+    --color-warning: hsl(60, 50%, 40%);
+    --height-header: 5rem;
+}
+
+.btn{
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+    outline: none;
+    border-style: none;
+    color: var(--font-color-primary);
+    font-size: 1rem;
+    cursor: pointer;
+}
+.btn-primary{
+    background: var(--color-primary);
+}
+.btn-danger{
+    background: var(--color-danger);
+}
+.btn-success{
+    background: var(--color-success);
+}
+.btn-warning{
+    background: var(--color-warning);
+}
+.alert-danger{
+    text-align: center;
+    color: var(--color-danger);
+    margin-bottom: 1rem;
+}
+.alert-success{
+    text-align: center;
+    color: var(--color-success);
+    margin-bottom: 1rem;
+}
+input, select{
+    outline: none;
+    padding: .5rem;
+    border-radius: .25rem;
+    border: 1px solid hsl(0, 0%, 80%);
+}
+.container-header{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: var(--color-primary);
+    padding: 0 4rem;
+    z-index: 1000;
+    height: var(--height-header);
+    border-bottom: 16px solid hsl(0, 0%, 0%);
+}
+
+
+[class^="content-create-"],
+.content-login{
+    width: 30rem;
+    margin: auto;
+    border: 1px solid var(--font-color-primary);
+    padding: 1rem;
+    border-radius: .25rem;
+}
+.form{
+    margin-bottom: 1rem;
+}
+.form-item{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+.form-btns button{
+    width: 100%;
+}
+.center{
+    text-align: center;
+}
+
+/*
+    ordenar  botones
+    */
+.items.fr-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 5px;
+}
+
+.figure-profile > img{
+    border: 1px solid rgb(135, 17, 108);
+}
+
+.figure-profile > .icon-navbar {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+}
+.label-figure-profile {
+    margin-top: -19px;
+    text-align: center;
+}
+
+.label-figure-profile > .label-avatar {
+    background-color: rgb(135, 17, 108);
+    padding: 5px 10px 5px 10px;
+    border-radius: 27px;
+}
+
+.navbar-brand {
+    padding-top: inherit !important;
+}

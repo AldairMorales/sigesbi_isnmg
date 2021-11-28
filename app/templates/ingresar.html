@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block title %} Iniciar Sesión {% endblock %}
+
+{% block section %}
+                <form action="/ingresar" method="post" autocomplete="off" class="form">
+                <div class="form-item">
+                    <label>Usuario:</label>
+                    <!-- <input type="text" name="username" id="username" placeholder="Usuario"> -->
+                    {{ form.hidden_tag() }}
+
+                    {{ form.usuario() }}
+                    <div class="message-error"></div>
+                </div>
+                <div class="form-item">
+                    <label>Contraseña:</label>
+                    <!-- <input type="password" name="password" id="password" placeholder="Contraseña"> -->
+                    {{ form.clave() }}
+                    <div class="message-error"></div>
+                </div>
+                <div class="form-btns">
+                    <!-- <button type="submit" class="btn btn-primary">Ingresar</button> -->
+                    {{ form.submit() }}
+                </div>
+            </form>
+            {% if message %}
+            <div class="alert-danger">
+                {{ message }}
+            </div>
+            {% endif %}
+            <p class="center">¿ No tienes una cuenta ? <a href="{{ url_for('registrarTipoUsuario') }}">Registrate</a></p>
+{% endblock %}
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    {% endblock %}
+

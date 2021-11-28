@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block title %} Modificar Libro {% endblock %}
+
+{% block section %}
+    <div class="content-formulario">
+	    <h1 class="h1titulo">Modificar Libro</h1>
+        <form action="/update/libro" method="post" autocomplete="off" class="form" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <input id="identificador" name="identificador" type="hidden" class="col-md-1 control-label" value="{{libro.id_libro}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <img class="img-fluid" src="/static/uploads/{{libro.ruta_portada}}" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label>ISBN:</label>
+                    <input type="text"  class="col-md-8 control-label" value="{{libro.isbn}}" disabled>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Imagen Portada:</label>
+                    <input id="ruta_portada" name="ruta_portada" type="file"  class="col-md-10 control-label">
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label>Titulo del libro:</label>
+                    <input id="tituloLibro" name="tituloLibro" type="text"  class="col-md-10 control-label" value="{{libro.titulo}}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label>Nombre portada:</label>
+                    <input id="nombre_portada" name="nombre_portada" type="text"  class="col-md-14 control-label" value="{{libro.nombre_portada}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label>Autor</label>
+                    <select id="autor" name="autor" class="form-select">
+                        <option value="{{libro.id_autor}}"> {{libro.id_autor}} </option>
+                        {% for autor in autores %}
+                        <option value="{{ autor.id_autor}}" >
+                            {{ autor.nombre}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-6" >
+                    <label >Categoria</label>
+                    <select id="categoria" name="categoria" class="form-select" >
+                        <option value="{{libro.id_categoria}}"> {{libro.id_categoria}} </option>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id_categoria}}" >
+                            {{ categoria.descripcion }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label >Editorial</label>
+                    <select id="editorial" name="editorial" class="form-select">
+                        <option value="{{libro.id_editorial}}"> {{libro.id_editorial}} </option>
+                        {% for editorial in editoriales %}
+                        <option value="{{ editorial.id_editorial }}" >
+                            {{ editorial.descripcion }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Ejemplares:</label>
+                    <input id="ejemplar" name="ejemplar" type="text"  class="col-md-6 control-label" value="{{libro.ejemplar}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-10">
+                    <label>Ubicacion:</label>
+                    <input id="ubicacion" name="ubicacion" type="text"  class="col-md-12 control-label" value="{{libro.ubicacion}}">
+                </div>
+            </div>
+            <button type="submit" id="guardar" class="btn btn-success">Guardar</button>
+            <a href="/consultar/libro">
+                <button type="button" class="btn btn-danger"> Salir </button>
+            </a>
+        </form>
+    </div>
+{% endblock %}

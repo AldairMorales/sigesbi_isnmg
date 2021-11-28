@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %} Consultar Libro {% endblock %}
+
+{% block head %}
+    <!--  Datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+      <!-- extension responsive -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+{% endblock %}
+
+{% block section %}
+  <div class="containerTable">
+    <div class="card">
+      <div class="card-header">
+          <h2>Consulta de Libros</h2>
+      </div>
+      <div class="card-body text-left">
+          <div class="table-responsive mt-8">
+              <table id="tableD" class="table table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                    <tr>
+                        {% if 'admin' in session %}
+                        <th class="text-center">
+                            Opciones
+                        </th>
+                        {% endif %}
+                        <th class="text-center">
+                            ISBN
+                        </th>
+                        <th class="text-center">
+                            Titulo
+                        </th>
+                        <th class="text-center">
+                            Autor
+                        </th>
+                        <th class="text-center">
+                            Categoria
+                        </th>
+                        <th class="text-center">
+                            Ejemplar
+                        </th>
+                        <th class="text-center">
+                            Disponibilidad
+                        </th>
+                        <th class="text-center">
+                            Ubicacion
+                        </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for libro, autor, categoria in libros %}
+                      <tr>
+                          {% if 'admin' in session %}
+                          <td>
+                              {% if libro.estado_libro %}
+                              <a href="/editar/libro/{{libro.id_libro}}">
+                                <button type="button" class="btn btn-warning"> Editar </button>
+                              </a>
+                              <a href="/delete/libro/{{libro.id_libro}}">
+                                  <button type="button" class="btn btn-danger"> Eliminar </button>
+                              </a>
+                              {% else %}
+                              <a href="/activar/libro/{{libro.id_libro}}">
+                                  <button type="button" class="btn btn-secondary"> Activar </button>
+                              </a>
+                              {% endif %}
+                          </td>
+                          {% endif %}
+                          <td>{{libro.isbn}}</td>
+                          <td>{{libro.titulo}}</td>
+                          <td>{{ autor }}</td>
+                          <td>{{categoria}}</td>
+                          <td>{{libro.ejemplar}}</td>
+                          {% if libro.estado %}
+                            <td> Disponible </td>
+                          {% elif libro.estado_libro %}
+                            <td> Prestado </td>
+                          {% else %}
+                            <td> No Disponible </td>
+                          {% endif %}
+                          <td>{{libro.ubicacion}}</td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+{% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dataTable.js') }}"></script>
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+{% endblock %}

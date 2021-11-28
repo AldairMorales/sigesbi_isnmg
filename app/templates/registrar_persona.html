@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %} Registrar Persona {% endblock %}
+
+{% block section %}
+    <div class="content-formulario">
+	    <h1 class="h1titulo">Registrar Nueva Persona</h1>
+
+        <form action="/registrar/persona" method="post" autocomplete="off" class="form">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Nombre</label>
+                    {{ form.hidden_tag() }}
+                    {{ form.nombre() }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Apellidos</label>
+                    {{ form.apellido() }}
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Correo</label>
+                    {{ form.correo() }}
+                </div>
+                <div class="form-group col-md-6">
+                   <label>Codigo:</label>
+                   {{ form.codigo() }}
+                </div>
+                <div class="form-group col-md-6">
+                   <label>DNI:</label>
+                   {{ form.dni() }}
+                </div>
+               <div class="form-group col-md-6">
+                   <label>telefono:</label>
+                   {{ form.telefono() }}
+               </div>
+            </div>
+            {{ form.submit() }}
+        </form>
+    </div>
+{% endblock %}
+
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    {% endblock %}

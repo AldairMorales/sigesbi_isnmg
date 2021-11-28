@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block title %} Consultar Prestamo {% endblock %}
+
+{% block head %}
+    <!--  Datatables  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+    <!--  extension responsive  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+{% endblock %}
+
+{% block section %}
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+          <h2>Consulta de Prestamos</h2>
+      </div>
+      <div class="card-body text-left">
+          <div class="table-responsive mt-8">
+              <table id="tableD" class="table table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                      <tr>
+                          <th class="text-center">
+                              Estado
+                          </th>
+                          <th class="text-center">
+                              DNI Persona
+                          </th>
+                          <th class="text-center">
+                              ISBN
+                          </th>
+                          <th class="text-center">
+                              Libro
+                          </th>
+                          <th class="text-center">
+                              Ejemplar
+                          </th>
+                          <th class="text-center">
+                              Fecha de Devolucion
+                          </th>
+                          <th class="text-center">
+                              Fecha de Recepcion
+                          </th>
+                          <th class="text-center">
+                              Estado Libro Entregado
+                          </th>
+                          <th class="text-center">
+                              Estado Libro Recepcionado
+                          </th>
+                          <th class="text-center">
+                              Fecha de Prestamo
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {% for prestamo, persona, isbn, libro, ejemplar in prestamos %}
+                      <tr>
+                          {% if prestamo.estado %}
+                            <td>Devuelto</td>
+                          {% else %}
+                            <td>Pendiente</td>
+                          {% endif %}
+                          <td>{{persona}}</td>
+                          <td>{{isbn}}</td>
+                          <td>{{libro}}</td>
+                          <td>{{ejemplar}}</td>
+                          <td>{{prestamo.fecha_devolucion}}</td>
+                          {% if prestamo.fecha_confirmacion == none %}
+                            <td> --- </td>
+                          {% else %}
+                            <td>{{prestamo.fecha_confirmacion}}</td>
+                          {% endif %}
+                          <td> {{prestamo.estado_entregado}}</td>
+                          {% if prestamo.estado_recibido %}
+                            <td> {{prestamo.estado_recibido}}</td>
+                          {% else %}
+                            <td> --- </td>
+                          {% endif %}
+                          <td>{{prestamo.fecha_creacion}}</td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+        <!--   Datatables-->
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
+        <!-- extension responsive -->
+        <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+        <script src="{{ url_for('static', filename='js/dataTable.js') }}"></script>
+{% endblock %}

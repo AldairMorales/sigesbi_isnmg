@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+
+{% block title %} Consultar Editorial {% endblock %}
+
+{% block head %}
+    <!--  Datatables  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+    <!--  extension responsive  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <script src="{{ url_for('static', filename='js/ventanaModal.js') }}"></script>
+{% endblock %}
+
+{% block section %}
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+          <h2>Consulta de Editoriales</h2>
+      </div>
+      <div class="card-body text-left">
+          <div class="table-responsive mt-8">
+              <table id="tableD" class="table table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                      <tr>
+                          {% if 'admin' in session %}
+                          <th class="text-center">
+                            Opciones
+                          </th>
+                          {% endif %}
+                          <th class="text-center">
+                              #
+                          </th>
+                          <th class="text-center">
+                              Descripcion
+                          </th>
+                          <th class="text-center">
+                              Estado
+                          </th>
+
+                      </tr>
+                  </thead>
+                  <tbody>
+                  {% for editorial in editoriales %}
+                      <tr>
+                          {% if 'admin' in session %}
+                          <td>
+                              {% if categoria.estado %}
+                              <button type="button" class="botonEditarEditorial" data-toggle="modal" data-target="#modalEditorial">
+                                  Editar
+                              </button>
+                              <a href="/delete/editorial/{{editorial.id_editorial}}">
+                                  <button type="button" class="btn btn-danger"> Eliminar </button>
+                              </a>
+                              {% else %}
+                              <a href="/activar/editorial/{{editorial.id_editorial}}">
+                                <button type="button" class="btn btn-secondary"> Activar </button>
+                              </a>
+                              {% endif %}
+                          </td>
+                          {% endif %}
+                          <td id="ideditorial">{{editorial.id_editorial}}</td>
+                          <td id="descripcionE">{{editorial.descripcion}}</td>
+                          {% if editorial.estado %}
+                            <td>Disponible</td>
+                          {% else %}
+                            <td >No disponible</td>
+                          {% endif %}
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal Editar -->
+<div class="modal fade" id="modalEditorial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModal">Editar Editorial</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body text-left">
+            <div class="content-formulario">
+                <form action="/update/editorial" method="post" autocomplete="off" class="form">
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <input id="identificador" name="identificador" type="hidden" class="col-md-1 control-label">
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label class="etiqueta2" id="etiqueta2" for="descripcion">Descripcion:</label>
+                            <input id="descripcion" name="descripcion" type="text"  class="col-md-10 control-label">
+                        </div>
+                    </div>
+                    <button type="submit" id="guardar" class="btn btn-success">Guardar</button>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dataTable.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/edit_delete.js') }}"></script>
+
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+{% endblock %}

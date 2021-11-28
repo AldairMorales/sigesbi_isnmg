@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %} Registrar Categoria {% endblock %}
+
+
+{% block section %}
+    <div class="content-formulario">
+	    <h1 class="h1titulo">Registrar Nueva Categoria</h1>
+
+        <form action="/registrar/categoria" method="post" autocomplete="off" class="form">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Nombre de Categoria</label>
+                    {{ form.hidden_tag() }}
+
+                    {{ form.descripcion() }}
+                </div>
+            </div>
+            <div class="form-row">
+            </div>
+
+            {{ form.submit() }}
+        </form>
+    </div>
+{% endblock %}
+
+
+    {% block scripts %}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='node_modules/sweetalert2/dist/sweetalert2.all.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <script>showMessageAlert("{{category}}", "{{message}}");</script>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    {% endblock %}
